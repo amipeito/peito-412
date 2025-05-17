@@ -10,6 +10,7 @@ import Home from "./pages/home/Home";
 import Phone from "./pages/phone/Phone";
 import About from "./pages/about/About";
 import Registration from "./pages/registration/Registration";
+import News from "./pages/news/News";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         {/* عمومی */}
         <Route path="/" element={<Home />} />
+        <Route path="/news" element={<News />} />
         <Route path="/phone" element={<Phone />} />
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Registration />} />

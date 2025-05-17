@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../navbar/Navbar";
-
+import Parvarsh from "../../assets/images/parvarsh.jpg";
+import Nosher12 from "../../assets/images/nosher12.jpg";
 function Home() {
   return (
     <>
@@ -14,7 +15,7 @@ function Home() {
             <div className="md:w-1/2 w-full">
               <div className="relative group overflow-hidden rounded-3xl shadow-lg transition-transform duration-500 hover:scale-105">
                 <img
-                  src="https://cdn.yjc.ir/files/fa/news/1397/9/18/9070502_428.jpg"
+                  src={Parvarsh}
                   alt="هنرستان 412"
                   className="w-full h-auto object-cover transition-transform duration-500"
                 />
@@ -29,7 +30,7 @@ function Home() {
               </h1>
               <p className="text-lg text-gray-800 leading-relaxed">
                 این سایت برای ثبت نام اولیه و اطلاعات خاصی راجب هنرستان 412
-                نوشیروانی قرار دارد
+                نوشیروانی قرار دارد.
               </p>
               <div className="mt-4">
                 <a
@@ -65,7 +66,7 @@ function Home() {
             {/* عکس - سمت راست (همین لینک قبلی) */}
             <div className="md:w-1/2 w-full relative group overflow-hidden rounded-3xl shadow-lg transition-transform duration-500 hover:scale-105">
               <img
-                src="https://int.nit.ac.ir/images/int/fa/page/editor/2022/1647321165-fdhr7s7xmaipfqh.jpg"
+                src={Nosher12}
                 alt="کارگاه‌های آموزشی"
                 className="w-full rounded-3xl shadow-lg object-cover"
               />

@@ -26,7 +26,7 @@ export default function Panel() {
         },
         {
           id: 2,
-          fullName: "سارا احمدی",
+          fullName: "رضا احمدی",
           parentPhone: "09369876543",
           field: "ساختمان",
           nationalCode: "1122334455",

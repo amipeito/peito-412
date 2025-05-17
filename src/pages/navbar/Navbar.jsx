@@ -18,6 +18,7 @@ function Navbar() {
           <ul className="hidden md:flex md:col-span-7 lg:col-span-8 space-x-2 rtl:space-x-reverse justify-end text-right text-gray-700">
             {[
               { name: "خانه", path: "/" },
+              { name: "اخبار و اطلاعیه", path: "/news" },
               { name: "درباره", path: "/about" },
               { name: "تماس", path: "/phone" },
               { name: "ثبت نام", path: "/register" },
@@ -68,6 +69,7 @@ function Navbar() {
           <ul className="mt-2 pb-4 border-t flex flex-col space-y-2 rtl:space-y-reverse text-right text-gray-700 px-2">
             {[
               { name: "خانه", path: "/" },
+              { name: "اخبار و اطلاعیه", path: "/news" },
               { name: "درباره", path: "/about" },
               { name: "تماس", path: "/phone" },
               { name: "ثبت نام", path: "/register" },
