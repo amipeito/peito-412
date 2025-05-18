@@ -114,6 +114,14 @@ function Home() {
               </div>
             </div>
 
+            {/* جمله اصلی به خوبی فرمت شده */}
+            {/* جمله اصلی به خوبی فرمت شده */}
+            <p className="mt-6 text-gray-700">
+              کلیه فرآیندها توسط تیم{" "}
+              <span className="font-bold text-blue-600">Front Devs</span> که
+              دانش‌آموزان خود هنرستان 412 هستند صورت پذیرفت.
+            </p>
+
             <p className="mt-8 text-sm text-gray-500">
               &copy; {new Date().getFullYear()} هنرستان 412 نوشیروانی. تمامی
               حقوق محفوظ است.
