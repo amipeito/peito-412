@@ -47,7 +47,7 @@ function News() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
       <Navbar />
 
       {/* بنر بالایی */}
@@ -62,7 +62,7 @@ function News() {
       <div className="container mx-auto px-4 py-10">
         {/* قسمت اطلاعیه */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-blue-900 border-b-2 border-blue-300 pb-2 mb-6">
+          <h2 className="text-2xl font-bold text-blue-900 dark:text-blue-300 border-b-2 border-blue-300 dark:border-blue-700 pb-2 mb-6">
             اطلاعیه‌ها
           </h2>
 
@@ -70,11 +70,13 @@ function News() {
             {announcements.map((item, index) => (
               <div
                 key={index}
-                className="bg-white p-5 rounded-xl shadow-md hover:shadow-lg transition-shadow border-l-4 border-yellow-500">
-                <h3 className="font-semibold text-lg text-gray-800">
+                className="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md hover:shadow-lg transition-shadow border-l-4 border-yellow-500">
+                <h3 className="font-semibold text-lg text-gray-800 dark:text-gray-200">
                   {item.title}
                 </h3>
-                <p className="text-gray-600 mt-2">{item.description}</p>
+                <p className="text-gray-600 dark:text-gray-300 mt-2">
+                  {item.description}
+                </p>
               </div>
             ))}
           </div>
@@ -82,7 +84,7 @@ function News() {
 
         {/* قسمت اخبار - ردیفی (vertical) */}
         <section>
-          <h2 className="text-2xl font-bold text-green-800 border-b-2 border-green-300 pb-2 mb-6">
+          <h2 className="text-2xl font-bold text-green-800 dark:text-green-400 border-b-2 border-green-300 dark:border-green-700 pb-2 mb-6">
             اخبار
           </h2>
 
@@ -90,7 +92,7 @@ function News() {
             {newsItems.map((item, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1">
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1">
                 {/* تصویر روی همه عرض */}
                 <img
                   src={item.image}
@@ -99,10 +101,12 @@ function News() {
                 />
                 {/* محتوای زیر تصویر */}
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-800">
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">
                     {item.title}
                   </h3>
-                  <p className="text-gray-600 mt-2">{item.description}</p>
+                  <p className="text-gray-600 dark:text-gray-300 mt-2">
+                    {item.description}
+                  </p>
                 </div>
               </div>
             ))}

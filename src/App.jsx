@@ -1,32 +1,51 @@
-// src/App.jsx
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+
+// صفحات
 import LoginPage from "./pages/loginpage/LoginPage";
 import Panel from "./pages/panel/Panel";
-import PrivateRoute from "./components/PrivateRoute";
-
-// صفحات عمومی
 import Home from "./pages/home/Home";
 import Phone from "./pages/phone/Phone";
 import About from "./pages/about/About";
 import Registration from "./pages/registration/Registration";
 import News from "./pages/news/News";
 
+// PrivateRoute برای صفحات امن
+import PrivateRoute from "./components/PrivateRoute";
+
+// آیکون‌ها
+import { MdDarkMode, MdLightMode } from "react-icons/md";
+
 function App() {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // ✅ افزودن یا حذف کلاس dark روی html tag
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode((prev) => !prev);
+  };
+
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
       <Routes>
-        {/* عمومی */}
+        {/* صفحات عمومی */}
         <Route path="/" element={<Home />} />
         <Route path="/news" element={<News />} />
         <Route path="/phone" element={<Phone />} />
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Registration />} />
 
-        {/* خصوصی */}
+        {/* صفحات اختصاصی */}
         <Route path="/login" element={<LoginPage />} />
         <Route
-          path="/Panel"
+          path="/panel"
           element={
             <PrivateRoute>
               <Panel />
@@ -34,9 +53,21 @@ function App() {
           }
         />
 
-        {/* 404 - اختیاری ولی پیشنهادی */}
+        {/* صفحه 404 */}
         <Route path="*" element={<div>صفحه پیدا نشد</div>} />
       </Routes>
+
+      {/* دکمه تغییر تم */}
+      <button
+        onClick={toggleDarkMode}
+        className="fixed bottom-4 right-4 bg-gray-200 dark:bg-gray-700 p-3 rounded-full shadow-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 z-50"
+        aria-label="تغییر تم">
+        {isDarkMode ? (
+          <MdLightMode size={24} className="text-yellow-300" />
+        ) : (
+          <MdDarkMode size={24} className="text-gray-700" />
+        )}
+      </button>
     </div>
   );
 }

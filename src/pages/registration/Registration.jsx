@@ -69,10 +69,10 @@ function Register() {
     <>
       <Navbar />
 
-      {/* Glassmorphism Background */}
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-10 px-4">
-        <div className="backdrop-blur-lg bg-white/60 rounded-2xl shadow-xl max-w-3xl mx-auto p-8 space-y-8">
-          <h1 className="text-3xl font-bold text-center text-blue-700 mb-8">
+      {/* Glassmorphism Background - dark mode support */}
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-10 px-4 transition-colors duration-300">
+        <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/70 rounded-2xl shadow-xl max-w-3xl mx-auto p-8 space-y-8">
+          <h1 className="text-3xl font-bold text-center text-blue-700 dark:text-blue-300 mb-8">
             فرم پیش ثبت‌نام دانش‌آموزان
           </h1>
 
@@ -84,9 +84,9 @@ function Register() {
             <div className="flex flex-col">
               <label
                 htmlFor="fullName"
-                className="font-medium mb-1 text-gray-700 flex items-center gap-2">
-                <FaUser className="text-blue-500" /> نام و نام خانوادگی
-                دانش‌آموز
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaUser className="text-blue-500 dark:text-blue-400" /> نام و
+                نام خانوادگی دانش‌آموز
               </label>
               <input
                 type="text"
@@ -95,7 +95,7 @@ function Register() {
                 value={formData.fullName}
                 onChange={handleChange}
                 required
-                className="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all"
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all bg-white dark:bg-gray-700 dark:text-gray-200"
               />
             </div>
 
@@ -103,8 +103,9 @@ function Register() {
             <div className="flex flex-col">
               <label
                 htmlFor="parentPhone"
-                className="font-medium mb-1 text-gray-700 flex items-center gap-2">
-                <FaPhone className="text-blue-500" /> شماره تماس همراه مادر/پدر
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaPhone className="text-blue-500 dark:text-blue-400" /> شماره
+                تماس همراه مادر/پدر
               </label>
               <input
                 type="tel"
@@ -113,7 +114,7 @@ function Register() {
                 value={formData.parentPhone}
                 onChange={handleChange}
                 required
-                className="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none"
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"
               />
             </div>
 
@@ -121,9 +122,9 @@ function Register() {
             <div className="flex flex-col">
               <label
                 htmlFor="field"
-                className="font-medium mb-1 text-gray-700 flex items-center gap-2">
-                <FaChalkboardTeacher className="text-blue-500" /> رشته آموزشی
-                مورد نظر
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaChalkboardTeacher className="text-blue-500 dark:text-blue-400" />{" "}
+                رشته آموزشی مورد نظر
               </label>
               <select
                 id="field"
@@ -131,7 +132,7 @@ function Register() {
                 value={formData.field}
                 onChange={handleChange}
                 required
-                className="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none">
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200">
                 <option value="">انتخاب کنید</option>
                 <option value="ساختمان">ساختمان</option>
                 <option value="کامپیوتر">کامپیوتر</option>
@@ -142,8 +143,9 @@ function Register() {
             <div className="flex flex-col">
               <label
                 htmlFor="nationalCode"
-                className="font-medium mb-1 text-gray-700 flex items-center gap-2">
-                <FaIdCard className="text-blue-500" /> کد ملی دانش‌آموز
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaIdCard className="text-blue-500 dark:text-blue-400" /> کد ملی
+                دانش‌آموز
               </label>
               <input
                 type="text"
@@ -152,7 +154,7 @@ function Register() {
                 value={formData.nationalCode}
                 onChange={handleChange}
                 required
-                className="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none"
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"
               />
             </div>
 
@@ -160,8 +162,9 @@ function Register() {
             <div className="flex flex-col">
               <label
                 htmlFor="address"
-                className="font-medium mb-1 text-gray-700 flex items-center gap-2">
-                <FaHome className="text-blue-500" /> آدرس دقیق محل سکونت
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaHome className="text-blue-500 dark:text-blue-400" /> آدرس
+                دقیق محل سکونت
               </label>
               <textarea
                 id="address"
@@ -170,16 +173,16 @@ function Register() {
                 onChange={handleChange}
                 required
                 rows={3}
-                className="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none"></textarea>
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"></textarea>
             </div>
 
             {/* کارنامه تحصیلی */}
             <div className="flex flex-col">
               <label
                 htmlFor="transcript"
-                className="font-medium mb-1 text-gray-700 flex items-center gap-2">
-                <FaFileImage className="text-blue-500" /> اطلاعات کارنامه تحصیلی
-                (تصویر)
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaFileImage className="text-blue-500 dark:text-blue-400" />{" "}
+                اطلاعات کارنامه تحصیلی (تصویر)
               </label>
               <input
                 type="file"
@@ -194,11 +197,11 @@ function Register() {
                 <button
                   type="button"
                   onClick={() => document.getElementById("transcript").click()}
-                  className="w-full sm:w-auto border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+                  className="w-full sm:w-auto border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 bg-white dark:bg-gray-700 dark:text-gray-200">
                   انتخاب فایل
                 </button>
               ) : (
-                <div className="mt-3 border border-green-300 bg-green-50 text-green-700 px-4 py-2 rounded-md shadow-sm text-sm">
+                <div className="mt-3 border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-md shadow-sm text-sm">
                   عکس دریافت شد
                 </div>
               )}
@@ -208,9 +211,9 @@ function Register() {
             <div className="flex flex-col">
               <label
                 htmlFor="guidancePriority"
-                className="font-medium mb-1 text-gray-700 flex items-center gap-2">
-                <FaBullseye className="text-blue-500" /> اولویت‌های هدایت تحصیلی
-                (تصویر)
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaBullseye className="text-blue-500 dark:text-blue-400" />{" "}
+                اولویت‌های هدایت تحصیلی (تصویر)
               </label>
               <input
                 type="file"
@@ -227,11 +230,11 @@ function Register() {
                   onClick={() =>
                     document.getElementById("guidancePriority").click()
                   }
-                  className="w-full sm:w-auto border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+                  className="w-full sm:w-auto border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 bg-white dark:bg-gray-700 dark:text-gray-200">
                   انتخاب فایل
                 </button>
               ) : (
-                <div className="mt-3 border border-green-300 bg-green-50 text-green-700 px-4 py-2 rounded-md shadow-sm text-sm">
+                <div className="mt-3 border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-md shadow-sm text-sm">
                   عکس دریافت شد
                 </div>
               )}
@@ -241,8 +244,9 @@ function Register() {
             <div className="flex flex-col">
               <label
                 htmlFor="award"
-                className="font-medium mb-1 text-gray-700 flex items-center gap-2">
-                <FaTrophy className="text-blue-500" /> لوح تقدیر یا مقام علمی
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaTrophy className="text-blue-500 dark:text-blue-400" /> لوح
+                تقدیر یا مقام علمی
               </label>
               <input
                 type="text"
@@ -250,14 +254,14 @@ function Register() {
                 name="award"
                 value={formData.award}
                 onChange={handleChange}
-                className="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none"
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"
               />
             </div>
 
             {/* دکمه ثبت فرم */}
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-md transform hover:-translate-y-1">
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-800 text-white py-3 px-4 rounded-lg hover:from-blue-700 hover:to-indigo-700 dark:hover:from-blue-600 dark:hover:to-indigo-700 transition-all duration-300 shadow-md transform hover:-translate-y-1">
               ثبت فرم
             </button>
           </form>

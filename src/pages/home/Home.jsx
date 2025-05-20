@@ -13,7 +13,7 @@ function Home() {
 
       <div className="container mx-auto px-4 py-10">
         {/* بخش اول */}
-        <div className="bg-gradient-to-r from-blue-50 to-sky-50 rounded-2xl shadow-xl overflow-hidden mb-12">
+        <div className="bg-gradient-to-r from-blue-50 to-sky-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-xl overflow-hidden mb-12">
           <div className="flex flex-col md:flex-row items-center gap-8 p-8">
             <div className="md:w-1/2 w-full">
               <div className="relative group overflow-hidden rounded-3xl shadow-lg transition-transform duration-500 hover:scale-105">
@@ -25,10 +25,10 @@ function Home() {
               </div>
             </div>
             <div className="md:w-1/2 w-full text-right space-y-6">
-              <h1 className="text-4xl font-extrabold text-blue-800">
+              <h1 className="text-4xl font-extrabold text-blue-800 dark:text-blue-300">
                 اطلاعات اولیه
               </h1>
-              <p className="text-lg text-gray-800 leading-relaxed">
+              <p className="text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
                 این سایت برای ثبت نام اولیه و اطلاعات خاصی راجب هنرستان 412
                 نوشیروانی قرار دارد.
               </p>
@@ -42,18 +42,18 @@ function Home() {
         </div>
 
         {/* بخش دوم */}
-        <div className="bg-gradient-to-r from-blue-50 to-sky-50 rounded-2xl shadow-xl overflow-hidden mb-12">
+        <div className="bg-gradient-to-r from-blue-50 to-sky-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-xl overflow-hidden mb-12">
           <div className="flex flex-col md:flex-row-reverse items-center gap-8 p-8">
             <div className="md:w-1/2 w-full text-right space-y-6">
-              <h2 className="text-3xl font-bold text-blue-800">
+              <h2 className="text-3xl font-bold text-blue-800 dark:text-blue-300">
                 چرا هنرستان نوشیروانی؟
               </h2>
-              <p className="text-lg text-gray-700 leading-relaxed">
+              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                 با بیش از 20 سال سابقه در زمینه آموزش فنی و حرفه‌ای، ما بهترین
                 زیرساخت‌ها و مربیان متخصص را برای آماده‌سازی دانش‌آموزان فراهم
                 کرده‌ایم.
               </p>
-              <ul className="list-disc pr-6 space-y-2 text-gray-800">
+              <ul className="list-disc pr-6 space-y-2 text-gray-800 dark:text-gray-200">
                 <li>رشته‌های متنوع: ساختمان، کامپیوتر</li>
                 <li>امکانات روز دنیا در کارگاه‌های آموزشی</li>
                 <li>فرصت‌های شغلی بالا پس از فارغ‌التحصیلی</li>
@@ -70,59 +70,65 @@ function Home() {
         </div>
 
         {/* Footer Section - هم رنگ با سایت */}
-        <footer className="bg-gradient-to-r from-blue-50 to-sky-50 rounded-t-2xl shadow-inner pt-10 pb-6 px-4">
+        <footer className="bg-gradient-to-r from-blue-50 to-sky-50 dark:from-gray-800 dark:to-gray-900 rounded-t-2xl shadow-inner pt-10 pb-6 px-4">
           <div className="container mx-auto text-center">
-            <h3 className="text-xl font-bold mb-6 text-blue-900">
+            <h3 className="text-xl font-bold mb-6 text-blue-900 dark:text-blue-300">
               طراحان این سایت
             </h3>
 
             <div className="flex flex-wrap justify-center gap-8">
               {/* امیر مهدی بهمرد */}
               <div className="text-center">
-                <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-blue-200 shadow-md">
+                <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-blue-200 dark:border-gray-600 shadow-md">
                   <img
                     src={Amir}
                     alt="امیر مهدی بهمرد"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <p className="font-medium text-gray-700">امیر مهدی بهمرد</p>
+                <p className="font-medium text-gray-700 dark:text-gray-200">
+                  امیر مهدی بهمرد
+                </p>
               </div>
 
               {/* عرشیا گروسی */}
               <div className="text-center">
-                <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-blue-200 shadow-md">
+                <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-blue-200 dark:border-gray-600 shadow-md">
                   <img
                     src={Arseyeha}
                     alt="عرشیا گروسی"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <p className="font-medium text-gray-700">عرشیا گروسی</p>
+                <p className="font-medium text-gray-700 dark:text-gray-200">
+                  عرشیا گروسی
+                </p>
               </div>
 
               {/* امیر حاجی تبار */}
               <div className="text-center">
-                <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-blue-200 shadow-md">
+                <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-blue-200 dark:border-gray-600 shadow-md">
                   <img
                     src={Amirht}
                     alt="امیر حاجی تبار"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <p className="font-medium text-gray-700">امیر حاجی تبار</p>
+                <p className="font-medium text-gray-700 dark:text-gray-200">
+                  امیر حاجی تبار
+                </p>
               </div>
             </div>
 
-            {/* جمله اصلی به خوبی فرمت شده */}
-            {/* جمله اصلی به خوبی فرمت شده */}
-            <p className="mt-6 text-gray-700">
+            <p className="mt-6 text-gray-700 dark:text-gray-300">
               کلیه فرآیندها توسط تیم{" "}
-              <span className="font-bold text-blue-600">Front Devs</span> که
-              دانش‌آموزان خود هنرستان 412 هستند صورت پذیرفت.
+              <span className="font-bold text-blue-600 dark:text-blue-400">
+                Front Devs
+              </span>{" "}
+              که دانش‌آموزان خود هنرستان 412 هستند صورت پذیرفت.
             </p>
 
-            <p className="mt-8 text-sm text-gray-500">
+            <p className="mt-8 text-sm text-gray-500 dark:text-gray-400">
               &copy; {new Date().getFullYear()} هنرستان 412 نوشیروانی. تمامی
               حقوق محفوظ است.
             </p>

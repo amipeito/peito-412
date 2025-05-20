@@ -2,12 +2,13 @@ import React from "react";
 import Navbar from "../navbar/Navbar";
 import photo from "../../assets/images/photo_2025-05-01_07-46-00.jpg";
 import { LuFlower2 } from "react-icons/lu";
+
 function About() {
   return (
     <>
       <Navbar />
 
-      <div className="container mx-auto px-4 py-6 font-vazir">
+      <div className="container mx-auto px-4 py-6 font-vazir dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300 min-h-screen">
         {/* عنوان اصلی */}
         <h1 className="text-2xl font-semibold mb-8 text-center">
           اطلاعاتی درمورد پیش ثبت نام و تاریخ مدرسه در اینجا قرار دارد
@@ -16,8 +17,8 @@ function About() {
         {/* بخش‌های محتوا */}
         <div className="flex flex-col gap-10 md:grid grid-cols-2">
           {/* بخش پیش ثبت نام */}
-          <section>
-            <h2 className="text-xl sm:text-2xl font-semibold text-blue-600 border-b pb-2 mb-4">
+          <section className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md">
+            <h2 className="text-xl sm:text-2xl font-semibold text-blue-500 dark:text-blue-400 border-b pb-2 mb-4">
               نوع پیش ثبت نام:
             </h2>
             <p className="leading-relaxed mb-4">
@@ -43,8 +44,8 @@ function About() {
           </section>
 
           {/* بخش تاریخچه مدرسه */}
-          <section>
-            <h2 className="text-xl sm:text-2xl font-semibold text-blue-600 border-b pb-2 mb-4">
+          <section className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md">
+            <h2 className="text-xl sm:text-2xl font-semibold text-blue-500 dark:text-blue-400 border-b pb-2 mb-4">
               تاریخچه و ارزش آموزشی مدرسه
             </h2>
             <p className="leading-relaxed mb-4">
@@ -72,7 +73,7 @@ function About() {
 
         {/* بخش عکس */}
         <div className="mt-12 text-center">
-          <h1 className="text-xl sm:text-2xl font-semibold mb-4 flex items-center justify-center gap-2">
+          <h1 className="text-xl sm:text-2xl font-semibold mb-4 flex items-center justify-center gap-2 dark:text-blue-300">
             هنرجویان برتر امتحانات نیمسال اول دیماه
             <LuFlower2 />
           </h1>
@@ -80,7 +81,7 @@ function About() {
             <img
               src={photo}
               alt="هنرجویان برتر"
-              className="max-w-full h-auto rounded-lg shadow-lg"
+              className="max-w-full h-auto rounded-lg shadow-lg dark:shadow-gray-700"
             />
           </div>
         </div>
