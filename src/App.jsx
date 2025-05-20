@@ -17,7 +17,11 @@ import PrivateRoute from "./components/PrivateRoute";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  // ✅ بررسی localStorage برای ذخیره وضعیت
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    return savedMode === "true";
+  });
 
   // ✅ افزودن یا حذف کلاس dark روی html tag
   useEffect(() => {
@@ -26,6 +30,9 @@ function App() {
     } else {
       document.documentElement.classList.remove("dark");
     }
+
+    // ذخیره وضعیت فعلی در localStorage
+    localStorage.setItem("darkMode", isDarkMode);
   }, [isDarkMode]);
 
   const toggleDarkMode = () => {
@@ -33,7 +40,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <Routes>
         {/* صفحات عمومی */}
         <Route path="/" element={<Home />} />
