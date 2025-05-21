@@ -22,9 +22,18 @@ function Register() {
     guidancePriority: null,
     award: "",
   });
-
   const [transcriptUploaded, setTranscriptUploaded] = useState(false);
   const [guidanceUploaded, setGuidanceUploaded] = useState(false);
+  const [errors, setErrors] = useState({}); // Store validation errors
+
+  // Validation Functions
+  const validatePhoneNumber = (value) => {
+    return value.length === 11 && /^\d+$/.test(value);
+  };
+
+  const validateNationalCode = (value) => {
+    return value.length === 10 && /^\d+$/.test(value);
+  };
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -35,19 +44,94 @@ function Register() {
       if (name === "transcript") setTranscriptUploaded(!!file);
       else if (name === "guidancePriority") setGuidanceUploaded(!!file);
     } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      let newValue = value;
+      if (name === "parentPhone") {
+        newValue = value.slice(0, 11); // Limit to 11 digits
+      } else if (name === "nationalCode") {
+        newValue = value.slice(0, 10); // Limit to 10 digits
+      } else if (["address", "award"].includes(name)) {
+        newValue = value.slice(0, 150); // Limit to 150 characters (≈5 lines)
+      }
+      setFormData((prev) => ({ ...prev, [name]: newValue }));
+
+      // Validate on input change
+      if (name === "parentPhone") {
+        setErrors((prev) => ({
+          ...prev,
+          parentPhone: validatePhoneNumber(newValue)
+            ? ""
+            : "شماره تماس باید 11 رقم باشد.",
+        }));
+      } else if (name === "nationalCode") {
+        setErrors((prev) => ({
+          ...prev,
+          nationalCode: validateNationalCode(newValue)
+            ? ""
+            : "کد ملی باید 10 رقم باشد.",
+        }));
+      } else if (name === "address") {
+        setErrors((prev) => ({
+          ...prev,
+          address:
+            newValue.length >= 150 ? "آدرس محل سکونت حداکثر 5 خط است." : "",
+        }));
+      } else if (name === "award") {
+        setErrors((prev) => ({
+          ...prev,
+          award: newValue.length >= 150 ? "لوح تقدیر حداکثر 5 خط است." : "",
+        }));
+      }
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const formDataToSend = new FormData();
     for (const key in formData) {
       formDataToSend.append(key, formData[key]);
     }
 
-    fetch("https://your-api.com/register ", {
+    // Clear previous errors
+    setErrors({});
+
+    // Final validation before submission
+    let isValid = true;
+
+    if (!validatePhoneNumber(formData.parentPhone)) {
+      setErrors((prev) => ({
+        ...prev,
+        parentPhone: "شماره تماس باید 11 رقم باشد.",
+      }));
+      isValid = false;
+    }
+
+    if (!validateNationalCode(formData.nationalCode)) {
+      setErrors((prev) => ({
+        ...prev,
+        nationalCode: "کد ملی باید 10 رقم باشد.",
+      }));
+      isValid = false;
+    }
+
+    if (formData.address.length >= 150) {
+      setErrors((prev) => ({
+        ...prev,
+        address: "آدرس محل سکونت حداکثر 5 خط است.",
+      }));
+      isValid = false;
+    }
+
+    if (formData.award.length >= 150) {
+      setErrors((prev) => ({
+        ...prev,
+        award: "لوح تقدیر حداکثر 5 خط است.",
+      }));
+      isValid = false;
+    }
+
+    if (!isValid) return;
+
+    fetch("http://localhost:3000/register", {
       method: "POST",
       body: formDataToSend,
     })
@@ -68,14 +152,12 @@ function Register() {
   return (
     <>
       <Navbar />
-
       {/* Glassmorphism Background - dark mode support */}
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-10 px-4 transition-colors duration-300">
         <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/70 rounded-2xl shadow-xl max-w-3xl mx-auto p-8 space-y-8">
           <h1 className="text-3xl font-bold text-center text-blue-700 dark:text-blue-300 mb-8">
             فرم پیش ثبت‌نام دانش‌آموزان
           </h1>
-
           <form
             onSubmit={handleSubmit}
             encType="multipart/form-data"
@@ -98,7 +180,6 @@ function Register() {
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all bg-white dark:bg-gray-700 dark:text-gray-200"
               />
             </div>
-
             {/* شماره تماس مادر/پدر */}
             <div className="flex flex-col">
               <label
@@ -114,10 +195,16 @@ function Register() {
                 value={formData.parentPhone}
                 onChange={handleChange}
                 required
+                maxLength={11}
+                pattern="[0-9]{11}"
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"
               />
+              {errors.parentPhone && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.parentPhone}
+                </p>
+              )}
             </div>
-
             {/* رشته آموزشی */}
             <div className="flex flex-col">
               <label
@@ -138,7 +225,6 @@ function Register() {
                 <option value="کامپیوتر">کامپیوتر</option>
               </select>
             </div>
-
             {/* کد ملی */}
             <div className="flex flex-col">
               <label
@@ -154,10 +240,16 @@ function Register() {
                 value={formData.nationalCode}
                 onChange={handleChange}
                 required
+                maxLength={10}
+                pattern="[0-9]{10}"
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"
               />
+              {errors.nationalCode && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.nationalCode}
+                </p>
+              )}
             </div>
-
             {/* آدرس محل سکونت */}
             <div className="flex flex-col">
               <label
@@ -172,10 +264,13 @@ function Register() {
                 value={formData.address}
                 onChange={handleChange}
                 required
-                rows={3}
+                rows={5}
+                maxLength={750}
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"></textarea>
+              {errors.address && (
+                <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+              )}
             </div>
-
             {/* کارنامه تحصیلی */}
             <div className="flex flex-col">
               <label
@@ -206,7 +301,6 @@ function Register() {
                 </div>
               )}
             </div>
-
             {/* اولویت‌های هدایت تحصیلی */}
             <div className="flex flex-col">
               <label
@@ -239,7 +333,6 @@ function Register() {
                 </div>
               )}
             </div>
-
             {/* لوح تقدیر یا مقام علمی */}
             <div className="flex flex-col">
               <label
@@ -248,16 +341,18 @@ function Register() {
                 <FaTrophy className="text-blue-500 dark:text-blue-400" /> لوح
                 تقدیر یا مقام علمی
               </label>
-              <input
-                type="text"
+              <textarea
                 id="award"
                 name="award"
                 value={formData.award}
                 onChange={handleChange}
-                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"
-              />
+                rows={5}
+                maxLength={750}
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"></textarea>
+              {errors.award && (
+                <p className="text-red-500 text-sm mt-1">{errors.award}</p>
+              )}
             </div>
-
             {/* دکمه ثبت فرم */}
             <button
               type="submit"
