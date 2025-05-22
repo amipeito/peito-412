@@ -35,7 +35,6 @@ export default function Panel() {
           throw new Error("خطا در دریافت داده");
         }
         const data = await response.json();
-        // Sort data by fullName to ensure consistent ordering
         const sortedData = data.sort((a, b) =>
           a.fullName.localeCompare(b.fullName)
         );
@@ -56,7 +55,7 @@ export default function Panel() {
     navigate("/");
   };
 
-  // Calculate filtered and paginated data
+  // Filter and Pagination
   const { data: paginatedData, total: totalPages } = useMemo(() => {
     const filtered = registrations.filter((user) => {
       const matchesSearch = user.fullName
@@ -75,7 +74,7 @@ export default function Panel() {
   }, [registrations, searchTerm, filterField, currentPage, itemsPerPage]);
 
   const handleImageError = (e) => {
-    e.target.src = "/images/default-image.png"; // placeholder image
+    e.target.src = "https://via.placeholder.com/150?text=No+Image  "; // placeholder image
   };
 
   return (
@@ -115,6 +114,7 @@ export default function Panel() {
           <h2 className="text-xl font-semibold mb-4 dark:text-white">
             لیست ثبت‌نام‌ها
           </h2>
+          {/* Loading State */}
           {loading ? (
             <div className="animate-pulse space-y-4">
               {[...Array(5)].map((_, i) => (
@@ -131,7 +131,7 @@ export default function Panel() {
             <>
               {/* Desktop Table */}
               <div className="hidden md:block overflow-x-auto">
-                <table className="w-full table-auto border-collapse text-right table-layout-fixed">
+                <table className="w-full table-auto border-collapse text-right table-layout:fixed table-container">
                   <thead>
                     <tr className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
                       <th className="border dark:border-gray-600 px-4 py-2">
@@ -166,35 +166,37 @@ export default function Panel() {
                   <tbody className="divide-y divide-gray-300 dark:divide-gray-600">
                     {paginatedData.map((user, index) => (
                       <tr
-                        key={user._id || user.id || index} // Use index as fallback
+                        key={user.id || index}
                         className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
                         <td className="border dark:border-gray-600 px-4 py-2">
                           {index + 1}
                         </td>
-                        <td className="border dark:border-gray-600 px-4 py-2 dark:text-gray-200">
-                          {user.fullName}
-                        </td>
-                        <td className="border dark:border-gray-600 px-4 py-2 dark:text-gray-200">
+                        <td className="dark:text-gray-200">{user.fullName}</td>
+                        <td className="dark:text-gray-200">
                           {user.parentPhone}
                         </td>
-                        <td className="border dark:border-gray-600 px-4 py-2 dark:text-blue-400">
-                          {user.field}
-                        </td>
-                        <td className="border dark:border-gray-600 px-4 py-2 dark:text-gray-200">
+                        <td className="dark:text-blue-400 ">{user.field}</td>
+                        <td className="dark:text-gray-200">
                           {user.nationalCode}
                         </td>
-                        <td className="border dark:border-gray-600 px-4 py-2 dark:text-gray-200">
-                          {user.address}
+                        <td className="border dark:border-gray-600 px-4 py-2">
+                          <div
+                            style={{
+                              maxHeight: "100px",
+                              overflowY: "auto",
+                              whiteSpace: "pre-wrap",
+                            }}>
+                            {user.address}
+                          </div>
                         </td>
                         <td className="border dark:border-gray-600 px-4 py-2">
-                          {user.transcript &&
-                          typeof user.transcript === "string" ? (
+                          {user.transcript ? (
                             <a
-                              href={user.transcript}
+                              href={`http://localhost:3000/uploads/${user.transcript}`}
                               target="_blank"
                               rel="noopener noreferrer">
                               <img
-                                src={user.transcript}
+                                src={`http://localhost:3000/uploads/${user.transcript}`}
                                 alt="کارنامه"
                                 onError={handleImageError}
                                 className="w-24 h-24 object-cover rounded border dark:border-gray-600"
@@ -205,14 +207,13 @@ export default function Panel() {
                           )}
                         </td>
                         <td className="border dark:border-gray-600 px-4 py-2">
-                          {user.guidancePriority &&
-                          typeof user.guidancePriority === "string" ? (
+                          {user.guidancePriority ? (
                             <a
-                              href={user.guidancePriority}
+                              href={`http://localhost:3000/uploads/${user.guidancePriority}`}
                               target="_blank"
                               rel="noopener noreferrer">
                               <img
-                                src={user.guidancePriority}
+                                src={`http://localhost:3000/uploads/${user.guidancePriority}`}
                                 alt="اولویت هدایت"
                                 onError={handleImageError}
                                 className="w-24 h-24 object-cover rounded border dark:border-gray-600"
@@ -222,10 +223,15 @@ export default function Panel() {
                             <span className="dark:text-gray-400">ندارد</span>
                           )}
                         </td>
-                        <td className="border dark:border-gray-600 px-4 py-2 dark:text-gray-200">
-                          {user.award || (
-                            <span className="dark:text-gray-400">ندارد</span>
-                          )}
+                        <td className="border dark:border-gray-600 px-4 py-2">
+                          <div
+                            style={{
+                              maxHeight: "100px",
+                              overflowY: "auto",
+                              whiteSpace: "pre-wrap",
+                            }}>
+                            {user.award || "ندارد"}
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -236,7 +242,7 @@ export default function Panel() {
               <div className="block md:hidden space-y-4">
                 {paginatedData.map((user, index) => (
                   <div
-                    key={user._id || user.id || index} // Use index as fallback
+                    key={user.id || index}
                     className="bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 rounded-lg p-4 shadow-sm transition-transform duration-150 hover:scale-[1.01]">
                     <div className="space-y-2">
                       <p>
@@ -252,19 +258,26 @@ export default function Panel() {
                         <strong>کد ملی:</strong> {user.nationalCode}
                       </p>
                       <p>
-                        <strong>آدرس:</strong> {user.address}
+                        <strong>آدرس:</strong>
+                        <div
+                          style={{
+                            maxHeight: "100px",
+                            overflowY: "auto",
+                            whiteSpace: "pre-wrap",
+                          }}>
+                          {user.address}
+                        </div>
                       </p>
                       <p>
                         <strong>کارنامه:</strong>
                       </p>
-                      {user.transcript &&
-                      typeof user.transcript === "string" ? (
+                      {user.transcript ? (
                         <a
-                          href={user.transcript}
+                          href={`http://localhost:3000/uploads/${user.transcript}`}
                           target="_blank"
                           rel="noopener noreferrer">
                           <img
-                            src={user.transcript}
+                            src={`http://localhost:3000/uploads/${user.transcript}`}
                             alt="کارنامه"
                             onError={handleImageError}
                             className="w-full max-w-xs h-auto object-cover rounded border dark:border-gray-600"
@@ -276,14 +289,13 @@ export default function Panel() {
                       <p>
                         <strong>اولویت هدایت:</strong>
                       </p>
-                      {user.guidancePriority &&
-                      typeof user.guidancePriority === "string" ? (
+                      {user.guidancePriority ? (
                         <a
-                          href={user.guidancePriority}
+                          href={`http://localhost:3000/uploads/${user.guidancePriority}`}
                           target="_blank"
                           rel="noopener noreferrer">
                           <img
-                            src={user.guidancePriority}
+                            src={`http://localhost:3000/uploads/${user.guidancePriority}`}
                             alt="اولویت هدایت"
                             onError={handleImageError}
                             className="w-full max-w-xs h-auto object-cover rounded border dark:border-gray-600"
@@ -293,10 +305,15 @@ export default function Panel() {
                         <span className="dark:text-gray-400">ندارد</span>
                       )}
                       <p>
-                        <strong>لوح تقدیر:</strong>{" "}
-                        {user.award || (
-                          <span className="dark:text-gray-400">ندارد</span>
-                        )}
+                        <strong>لوح تقدیر:</strong>
+                        <div
+                          style={{
+                            maxHeight: "100px",
+                            overflowY: "auto",
+                            whiteSpace: "pre-wrap",
+                          }}>
+                          {user.award || "ندارد"}
+                        </div>
                       </p>
                     </div>
                   </div>

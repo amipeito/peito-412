@@ -1,16 +1,27 @@
 // وارد کردن ماژول‌ها
 const express = require("express");
-require("dotenv").config();
 const cors = require("cors");
 const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
+require("dotenv").config();
 
 // ایجاد اپلیکیشن
 const app = express();
 
-// تنظیمات Middleware
+// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// برای دسترسی مستقیم به فایل‌های آپلود شده
+app.use("/uploads", express.static("uploads"));
+
+// اطمینان از وجود پوشه uploads
+const uploadsDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
 
 // تنظیمات ذخیره فایل با Multer
 const storage = multer.diskStorage({
@@ -23,7 +34,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 // متغیر برای ذخیره اطلاعات ثبت‌نام شده
 let registrations = [];
@@ -110,3 +121,4 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`listening port ${port}`);
 });
+

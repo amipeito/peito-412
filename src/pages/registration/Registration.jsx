@@ -24,20 +24,20 @@ function Register() {
   });
   const [transcriptUploaded, setTranscriptUploaded] = useState(false);
   const [guidanceUploaded, setGuidanceUploaded] = useState(false);
-  const [errors, setErrors] = useState({}); // Store validation errors
+  const [errors, setErrors] = useState({});
 
-  // Validation Functions
+  // اعتبارسنجی شماره تماس
   const validatePhoneNumber = (value) => {
     return value.length === 11 && /^\d+$/.test(value);
   };
 
+  // اعتبارسنجی کد ملی
   const validateNationalCode = (value) => {
     return value.length === 10 && /^\d+$/.test(value);
   };
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-
     if (type === "file") {
       const file = files[0];
       setFormData((prev) => ({ ...prev, [name]: file }));
@@ -46,15 +46,15 @@ function Register() {
     } else {
       let newValue = value;
       if (name === "parentPhone") {
-        newValue = value.slice(0, 11); // Limit to 11 digits
+        newValue = value.slice(0, 11); // حداکثر 11 رقم
       } else if (name === "nationalCode") {
-        newValue = value.slice(0, 10); // Limit to 10 digits
+        newValue = value.slice(0, 10); // حداکثر 10 رقم
       } else if (["address", "award"].includes(name)) {
-        newValue = value.slice(0, 150); // Limit to 150 characters (≈5 lines)
+        newValue = value.slice(0, 2250); // حداکثر 2250 کاراکتر (~15 خط)
       }
       setFormData((prev) => ({ ...prev, [name]: newValue }));
 
-      // Validate on input change
+      // اعتبارسنجی زنده
       if (name === "parentPhone") {
         setErrors((prev) => ({
           ...prev,
@@ -73,12 +73,12 @@ function Register() {
         setErrors((prev) => ({
           ...prev,
           address:
-            newValue.length >= 150 ? "آدرس محل سکونت حداکثر 5 خط است." : "",
+            newValue.length >= 2250 ? "آدرس محل سکونت حداکثر 15 خط است." : "",
         }));
       } else if (name === "award") {
         setErrors((prev) => ({
           ...prev,
-          award: newValue.length >= 150 ? "لوح تقدیر حداکثر 5 خط است." : "",
+          award: newValue.length >= 2250 ? "لوح تقدیر حداکثر 15 خط است." : "",
         }));
       }
     }
@@ -86,15 +86,7 @@ function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formDataToSend = new FormData();
-    for (const key in formData) {
-      formDataToSend.append(key, formData[key]);
-    }
-
-    // Clear previous errors
     setErrors({});
-
-    // Final validation before submission
     let isValid = true;
 
     if (!validatePhoneNumber(formData.parentPhone)) {
@@ -113,23 +105,29 @@ function Register() {
       isValid = false;
     }
 
-    if (formData.address.length >= 150) {
+    if (formData.address.length >= 2250) {
       setErrors((prev) => ({
         ...prev,
-        address: "آدرس محل سکونت حداکثر 5 خط است.",
+        address: "آدرس محل سکونت حداکثر 15 خط است.",
       }));
       isValid = false;
     }
 
-    if (formData.award.length >= 150) {
+    if (formData.award.length >= 2250) {
       setErrors((prev) => ({
         ...prev,
-        award: "لوح تقدیر حداکثر 5 خط است.",
+        award: "لوح تقدیر حداکثر 15 خط است.",
       }));
       isValid = false;
     }
 
     if (!isValid) return;
+
+    // ارسال داده‌ها به سرور
+    const formDataToSend = new FormData();
+    for (const key in formData) {
+      formDataToSend.append(key, formData[key]);
+    }
 
     fetch("http://localhost:3000/register", {
       method: "POST",
@@ -152,7 +150,7 @@ function Register() {
   return (
     <>
       <Navbar />
-      {/* Glassmorphism Background - dark mode support */}
+      {/* پس‌زمینه شیشه‌ای */}
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-10 px-4 transition-colors duration-300">
         <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/70 rounded-2xl shadow-xl max-w-3xl mx-auto p-8 space-y-8">
           <h1 className="text-3xl font-bold text-center text-blue-700 dark:text-blue-300 mb-8">
@@ -180,6 +178,7 @@ function Register() {
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all bg-white dark:bg-gray-700 dark:text-gray-200"
               />
             </div>
+
             {/* شماره تماس مادر/پدر */}
             <div className="flex flex-col">
               <label
@@ -205,6 +204,7 @@ function Register() {
                 </p>
               )}
             </div>
+
             {/* رشته آموزشی */}
             <div className="flex flex-col">
               <label
@@ -225,6 +225,7 @@ function Register() {
                 <option value="کامپیوتر">کامپیوتر</option>
               </select>
             </div>
+
             {/* کد ملی */}
             <div className="flex flex-col">
               <label
@@ -250,6 +251,7 @@ function Register() {
                 </p>
               )}
             </div>
+
             {/* آدرس محل سکونت */}
             <div className="flex flex-col">
               <label
@@ -264,13 +266,14 @@ function Register() {
                 value={formData.address}
                 onChange={handleChange}
                 required
-                rows={5}
-                maxLength={750}
+                rows={15}
+                maxLength={2250}
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"></textarea>
               {errors.address && (
                 <p className="text-red-500 text-sm mt-1">{errors.address}</p>
               )}
             </div>
+
             {/* کارنامه تحصیلی */}
             <div className="flex flex-col">
               <label
@@ -301,6 +304,7 @@ function Register() {
                 </div>
               )}
             </div>
+
             {/* اولویت‌های هدایت تحصیلی */}
             <div className="flex flex-col">
               <label
@@ -333,6 +337,7 @@ function Register() {
                 </div>
               )}
             </div>
+
             {/* لوح تقدیر یا مقام علمی */}
             <div className="flex flex-col">
               <label
@@ -346,13 +351,14 @@ function Register() {
                 name="award"
                 value={formData.award}
                 onChange={handleChange}
-                rows={5}
-                maxLength={750}
+                rows={15}
+                maxLength={2250}
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"></textarea>
               {errors.award && (
                 <p className="text-red-500 text-sm mt-1">{errors.award}</p>
               )}
             </div>
+
             {/* دکمه ثبت فرم */}
             <button
               type="submit"
