@@ -1,9 +1,11 @@
 import React from "react";
 import Navbar from "../navbar/Navbar";
-import Parvarsh from "../../assets/images/parvarsh.jpg";
+import Parvarsh from "../../assets/images/chool412.jpg";
 import Nosher12 from "../../assets/images/nosher12.jpg";
+import Newss from "../../assets/images/news.jpg";
 import Amir from "../../assets/images/amir.jpg";
 import Arseyeha from "../../assets/images/arseyeha.jpg";
+import ArefHaji from "../../assets/images/aref-haji.JPG";
 import Amirht from "../../assets/images/amirht.jpg";
 
 function Home() {
@@ -69,6 +71,35 @@ function Home() {
           </div>
         </div>
 
+        {/* بخش سوم */}
+        <div className="bg-gradient-to-r from-blue-50 to-sky-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-xl overflow-hidden mb-12">
+          <div className="flex flex-col md:flex-row items-center gap-8 p-8">
+            <div className="md:w-1/2 w-full">
+              <div className="relative group overflow-hidden rounded-3xl shadow-lg transition-transform duration-500 hover:scale-105">
+                <img
+                  src={Newss}
+                  alt="هنرستان 412"
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+            </div>
+            <div className="md:w-1/2 w-full text-right space-y-6">
+              <h1 className="text-4xl font-extrabold text-blue-800 dark:text-blue-300">
+                اخبار و اطلاعیه
+              </h1>
+              <p className="text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
+                خبر و اطلاعیه مهم رو میتوانید با کیلیک بر روی دکمه زیر دنبال
+                کنید.
+              </p>
+              <a
+                href="/news"
+                className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
+                برای دیدن کامل اخبار و اطلاعات ....
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* Footer Section - هم رنگ با سایت */}
         <footer className="bg-gradient-to-r from-blue-50 to-sky-50 dark:from-gray-800 dark:to-gray-900 rounded-t-2xl shadow-inner pt-10 pb-6 px-4">
           <div className="container mx-auto text-center">
@@ -116,6 +147,20 @@ function Home() {
                 </div>
                 <p className="font-medium text-gray-700 dark:text-gray-200">
                   امیر حاجی تبار
+                </p>
+              </div>
+
+              {/* عارف حاجی نژاد */}
+              <div className="text-center">
+                <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-blue-200 dark:border-gray-600 shadow-md">
+                  <img
+                    src={ArefHaji}
+                    alt="عارف حاجی نژاد"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <p className="font-medium text-gray-700 dark:text-gray-200">
+                  عارف حاجی نژاد
                 </p>
               </div>
             </div>
