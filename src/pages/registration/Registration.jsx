@@ -45,7 +45,10 @@ function Register() {
       else if (name === "guidancePriority") setGuidanceUploaded(!!file);
     } else {
       let newValue = value;
-      if (name === "parentPhone") {
+      if (name === "fullName") {
+        // حذف همه کاراکترها به جز حروف فارسی و فاصله
+        newValue = value.replace(/[^آ-ی\s]/g, "");
+      } else if (name === "parentPhone") {
         newValue = value.slice(0, 11); // حداکثر 11 رقم
       } else if (name === "nationalCode") {
         newValue = value.slice(0, 10); // حداکثر 10 رقم
@@ -55,7 +58,15 @@ function Register() {
       setFormData((prev) => ({ ...prev, [name]: newValue }));
 
       // اعتبارسنجی زنده
-      if (name === "parentPhone") {
+      if (name === "fullName") {
+        setErrors((prev) => ({
+          ...prev,
+          fullName:
+            newValue.length < 3
+              ? "نام و نام خانوادگی باید حداقل 3 حرف باشد"
+              : "",
+        }));
+      } else if (name === "parentPhone") {
         setErrors((prev) => ({
           ...prev,
           parentPhone: validatePhoneNumber(newValue)
@@ -89,7 +100,17 @@ function Register() {
     setErrors({});
     let isValid = true;
 
-    if (!validatePhoneNumber(formData.parentPhone)) {
+    // بررسی نام و نام خانوادگی
+    if (!formData.fullName || formData.fullName.length < 3) {
+      setErrors((prev) => ({
+        ...prev,
+        fullName: "نام و نام خانوادگی باید حداقل 3 حرف باشد",
+      }));
+      isValid = false;
+    }
+
+    // بررسی شماره تماس
+    if (!formData.parentPhone || !validatePhoneNumber(formData.parentPhone)) {
       setErrors((prev) => ({
         ...prev,
         parentPhone: "شماره تماس باید 11 رقم باشد.",
@@ -97,7 +118,20 @@ function Register() {
       isValid = false;
     }
 
-    if (!validateNationalCode(formData.nationalCode)) {
+    // بررسی رشته آموزشی
+    if (!formData.field) {
+      setErrors((prev) => ({
+        ...prev,
+        field: "لطفاً رشته آموزشی را انتخاب کنید",
+      }));
+      isValid = false;
+    }
+
+    // بررسی کد ملی
+    if (
+      !formData.nationalCode ||
+      !validateNationalCode(formData.nationalCode)
+    ) {
       setErrors((prev) => ({
         ...prev,
         nationalCode: "کد ملی باید 10 رقم باشد.",
@@ -105,7 +139,14 @@ function Register() {
       isValid = false;
     }
 
-    if (formData.address.length >= 2250) {
+    // بررسی آدرس
+    if (!formData.address) {
+      setErrors((prev) => ({
+        ...prev,
+        address: "لطفاً آدرس را وارد کنید",
+      }));
+      isValid = false;
+    } else if (formData.address.length >= 2250) {
       setErrors((prev) => ({
         ...prev,
         address: "آدرس محل سکونت حداکثر 15 خط است.",
@@ -113,10 +154,19 @@ function Register() {
       isValid = false;
     }
 
-    if (formData.award.length >= 2250) {
+    // بررسی فایل‌های آپلودی
+    if (!formData.transcript) {
       setErrors((prev) => ({
         ...prev,
-        award: "لوح تقدیر حداکثر 15 خط است.",
+        transcript: "لطفاً کارنامه تحصیلی را آپلود کنید",
+      }));
+      isValid = false;
+    }
+
+    if (!formData.guidancePriority) {
+      setErrors((prev) => ({
+        ...prev,
+        guidancePriority: "لطفاً اولویت‌های هدایت تحصیلی را آپلود کنید",
       }));
       isValid = false;
     }
@@ -129,16 +179,34 @@ function Register() {
       formDataToSend.append(key, formData[key]);
     }
 
-    fetch("http://localhost:3000/register", {
+    fetch("http://localhost:3000/api/user/register", {
       method: "POST",
       body: formDataToSend,
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
         if (data.success) {
           alert("ثبت با موفقیت انجام شد!");
+          // پاک کردن فرم
+          setFormData({
+            fullName: "",
+            parentPhone: "",
+            field: "",
+            nationalCode: "",
+            address: "",
+            transcript: null,
+            guidancePriority: null,
+            award: "",
+          });
+          setTranscriptUploaded(false);
+          setGuidanceUploaded(false);
         } else {
-          alert("خطا در ثبت فرم!");
+          alert("خطا در ثبت فرم: " + (data.error || "خطای نامشخص"));
         }
       })
       .catch((err) => {
@@ -175,8 +243,13 @@ function Register() {
                 value={formData.fullName}
                 onChange={handleChange}
                 required
+                minLength={3}
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all bg-white dark:bg-gray-700 dark:text-gray-200"
+                placeholder="فقط حروف فارسی مجاز است"
               />
+              {errors.fullName && (
+                <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+              )}
             </div>
 
             {/* شماره تماس مادر/پدر */}
@@ -224,6 +297,9 @@ function Register() {
                 <option value="ساختمان">ساختمان</option>
                 <option value="کامپیوتر">کامپیوتر</option>
               </select>
+              {errors.field && (
+                <p className="text-red-500 text-sm mt-1">{errors.field}</p>
+              )}
             </div>
 
             {/* کد ملی */}
@@ -296,12 +372,15 @@ function Register() {
                   type="button"
                   onClick={() => document.getElementById("transcript").click()}
                   className="w-full sm:w-auto border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 bg-white dark:bg-gray-700 dark:text-gray-200">
-                  انتخاب فایل
+                  انتخاب فایل (اجباری)
                 </button>
               ) : (
                 <div className="mt-3 border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-md shadow-sm text-sm">
                   عکس دریافت شد
                 </div>
+              )}
+              {errors.transcript && (
+                <p className="text-red-500 text-sm mt-1">{errors.transcript}</p>
               )}
             </div>
 
@@ -329,12 +408,17 @@ function Register() {
                     document.getElementById("guidancePriority").click()
                   }
                   className="w-full sm:w-auto border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 bg-white dark:bg-gray-700 dark:text-gray-200">
-                  انتخاب فایل
+                  انتخاب فایل (اجباری)
                 </button>
               ) : (
                 <div className="mt-3 border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-md shadow-sm text-sm">
                   عکس دریافت شد
                 </div>
+              )}
+              {errors.guidancePriority && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.guidancePriority}
+                </p>
               )}
             </div>
 
@@ -344,7 +428,7 @@ function Register() {
                 htmlFor="award"
                 className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
                 <FaTrophy className="text-blue-500 dark:text-blue-400" /> لوح
-                تقدیر یا مقام علمی
+                تقدیر یا مقام علمی (اختیاری)
               </label>
               <textarea
                 id="award"

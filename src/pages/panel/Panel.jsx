@@ -24,12 +24,7 @@ export default function Panel() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/registrations",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
+          "http://localhost:3000/api/user/registrations"
         );
         if (!response.ok) {
           throw new Error("خطا در دریافت داده");
@@ -192,11 +187,11 @@ export default function Panel() {
                         <td className="border dark:border-gray-600 px-4 py-2">
                           {user.transcript ? (
                             <a
-                              href={`http://localhost:3000/uploads/${user.transcript}`}
+                              href={`http://localhost:3000/api/user/uploads/${user.transcript}`}
                               target="_blank"
                               rel="noopener noreferrer">
                               <img
-                                src={`http://localhost:3000/uploads/${user.transcript}`}
+                                src={`http://localhost:3000/api/user/uploads/${user.transcript}`}
                                 alt="کارنامه"
                                 onError={handleImageError}
                                 className="w-24 h-24 object-cover rounded border dark:border-gray-600"
@@ -209,11 +204,11 @@ export default function Panel() {
                         <td className="border dark:border-gray-600 px-4 py-2">
                           {user.guidancePriority ? (
                             <a
-                              href={`http://localhost:3000/uploads/${user.guidancePriority}`}
+                              href={`http://localhost:3000/api/user/uploads/${user.guidancePriority}`}
                               target="_blank"
                               rel="noopener noreferrer">
                               <img
-                                src={`http://localhost:3000/uploads/${user.guidancePriority}`}
+                                src={`http://localhost:3000/api/user/uploads/${user.guidancePriority}`}
                                 alt="اولویت هدایت"
                                 onError={handleImageError}
                                 className="w-24 h-24 object-cover rounded border dark:border-gray-600"
@@ -273,11 +268,11 @@ export default function Panel() {
                       </p>
                       {user.transcript ? (
                         <a
-                          href={`http://localhost:3000/uploads/${user.transcript}`}
+                          href={`http://localhost:3000/api/user/uploads/${user.transcript}`}
                           target="_blank"
                           rel="noopener noreferrer">
                           <img
-                            src={`http://localhost:3000/uploads/${user.transcript}`}
+                            src={`http://localhost:3000/api/user/uploads/${user.transcript}`}
                             alt="کارنامه"
                             onError={handleImageError}
                             className="w-full max-w-xs h-auto object-cover rounded border dark:border-gray-600"
@@ -291,11 +286,11 @@ export default function Panel() {
                       </p>
                       {user.guidancePriority ? (
                         <a
-                          href={`http://localhost:3000/uploads/${user.guidancePriority}`}
+                          href={`http://localhost:3000/api/user/uploads/${user.guidancePriority}`}
                           target="_blank"
                           rel="noopener noreferrer">
                           <img
-                            src={`http://localhost:3000/uploads/${user.guidancePriority}`}
+                            src={`http://localhost:3000/api/user/uploads/${user.guidancePriority}`}
                             alt="اولویت هدایت"
                             onError={handleImageError}
                             className="w-full max-w-xs h-auto object-cover rounded border dark:border-gray-600"
