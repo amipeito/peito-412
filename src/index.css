@@ -1,0 +1,18 @@
+/* فایل CSS یا <style> در فایل JavaScript */
+.table-container {
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+
+.table-container td,
+.table-container th {
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-container tr {
+  margin-bottom: 10px;
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
