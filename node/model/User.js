@@ -21,10 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     length: 10,
-<<<<<<< HEAD
-=======
-    unique: true,
->>>>>>> c61f234e41d9d8a2397b54c71209ade9efe0b412
+    // unique: true, // حذف شد تا تکراری مجاز باشد
   },
   address: {
     type: String,
