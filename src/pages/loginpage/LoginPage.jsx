@@ -7,12 +7,23 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    if (username === "javad" && password === "135775") {
-      localStorage.setItem("isLoggedIn", "true");
-      navigate("/Panel"); // بدون رفرش
+  const handleLogin = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      const res = await fetch('http://localhost:3000/api/user/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (res.ok && data.token) {
+        localStorage.setItem('token', data.token);
+        navigate('/Panel');
     } else {
-      alert("نام کاربری یا پسورد اشتباه است!");
+        alert(data.error || 'خطا در ورود!');
+      }
+    } catch (err) {
+      alert('خطا در ارتباط با سرور!');
     }
   };
 
@@ -27,6 +38,7 @@ export default function LoginPage() {
           ورود به پنل مدیریت
         </h2>
 
+        <form onSubmit={handleLogin}>
         {/* فرم ورود */}
         <div className="space-y-4">
           <div>
@@ -57,19 +69,21 @@ export default function LoginPage() {
         </div>
 
         {/* دکمه ها */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-between">
+          <div className="flex flex-col sm:flex-row gap-3 justify-between mt-6">
           <button
-            onClick={handleLogin}
+              type="submit"
             className="flex-1 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md transition-colors">
             ورود
           </button>
 
           <button
+              type="button"
             onClick={goBack}
             className="flex-1 bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-800 dark:text-white font-semibold py-2 px-4 rounded-md transition-colors">
             برگشت به صفحه اصلی
           </button>
         </div>
+        </form>
       </div>
     </div>
   );

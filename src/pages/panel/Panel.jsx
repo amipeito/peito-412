@@ -14,8 +14,9 @@ export default function Panel() {
 
   // Authentication Check
   useEffect(() => {
-    if (!localStorage.getItem("isLoggedIn")) {
-      navigate("/");
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
     }
   }, [navigate]);
 
@@ -23,8 +24,14 @@ export default function Panel() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem('token');
         const response = await fetch(
-          "http://localhost:3000/api/user/registrations"
+          "http://localhost:3000/api/user/registrations",
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }
         );
         if (!response.ok) {
           throw new Error("خطا در دریافت داده");

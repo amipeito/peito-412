@@ -25,6 +25,15 @@ function Register() {
   const [transcriptUploaded, setTranscriptUploaded] = useState(false);
   const [guidanceUploaded, setGuidanceUploaded] = useState(false);
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState("");
+
+  const allowedTypes = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'image/jpg',
+  ];
 
   // اعتبارسنجی شماره تماس
   const validatePhoneNumber = (value) => {
@@ -40,6 +49,18 @@ function Register() {
     const { name, value, type, files } = e.target;
     if (type === "file") {
       const file = files[0];
+      if (file && !allowedTypes.includes(file.type)) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "فقط فایل عکس با فرمت jpg, jpeg, png, gif, webp مجاز است.",
+        }));
+        setFormData((prev) => ({ ...prev, [name]: null }));
+        if (name === "transcript") setTranscriptUploaded(false);
+        else if (name === "guidancePriority") setGuidanceUploaded(false);
+        return;
+      } else {
+        setErrors((prev) => ({ ...prev, [name]: "" }));
+      }
       setFormData((prev) => ({ ...prev, [name]: file }));
       if (name === "transcript") setTranscriptUploaded(!!file);
       else if (name === "guidancePriority") setGuidanceUploaded(!!file);
@@ -183,13 +204,12 @@ function Register() {
       method: "POST",
       body: formDataToSend,
     })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) {
+          setServerError(data.error || "خطایی رخ داده است");
+          return;
         }
-        return res.json();
-      })
-      .then((data) => {
         if (data.success) {
           alert("ثبت با موفقیت انجام شد!");
           // پاک کردن فرم
@@ -205,29 +225,45 @@ function Register() {
           });
           setTranscriptUploaded(false);
           setGuidanceUploaded(false);
+          setServerError("");
+        } else if (data.errors) {
+          // نمایش خطاهای اعتبارسنجی سمت سرور
+          const newErrors = {};
+          data.errors.forEach(err => {
+            newErrors[err.param] = err.msg;
+          });
+          setErrors(newErrors);
+          setServerError("");
         } else {
           alert("خطا در ثبت فرم: " + (data.error || "خطای نامشخص"));
+          setServerError("");
         }
       })
-      .catch((err) => {
-        console.error(err);
-        alert("خطا در ارتباط با سرور!");
+      .catch(() => {
+        setServerError("خطا در ارتباط با سرور");
       });
   };
 
   return (
     <>
       <Navbar />
-      {/* پس‌زمینه شیشه‌ای */}
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-10 px-4 transition-colors duration-300">
-        <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/70 rounded-2xl shadow-xl max-w-3xl mx-auto p-8 space-y-8">
+      <div className="max-w-4xl mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded shadow">
+        <div className="mb-4 p-3 bg-blue-100 text-blue-800 rounded text-center text-sm">
+          توجه: شما فقط هر ۳ دقیقه یک بار می‌توانید اطلاعات ثبت‌نام ارسال کنید. اگر قبلاً ثبت‌نام شما کامل بوده، نیازی به ارسال مجدد نیست.
+        </div>
+        {serverError && (
+          <div className="mb-4 p-3 bg-red-100 text-red-800 rounded text-center text-sm">
+            {serverError}
+          </div>
+        )}
+        <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/70 rounded-2xl shadow-xl max-w-4xl mx-auto p-12">
           <h1 className="text-3xl font-bold text-center text-blue-700 dark:text-blue-300 mb-8">
             فرم پیش ثبت‌نام دانش‌آموزان
           </h1>
           <form
             onSubmit={handleSubmit}
             encType="multipart/form-data"
-            className="space-y-6">
+            className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* نام و نام خانوادگی */}
             <div className="flex flex-col">
               <label
@@ -265,7 +301,14 @@ function Register() {
                 id="parentPhone"
                 name="parentPhone"
                 value={formData.parentPhone}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 11);
+                  setFormData((prev) => ({ ...prev, parentPhone: value }));
+                  setErrors((prev) => ({
+                    ...prev,
+                    parentPhone: value.length === 11 ? "" : "شماره تماس باید ۱۱ رقم باشد.",
+                  }));
+                }}
                 required
                 maxLength={11}
                 pattern="[0-9]{11}"
@@ -311,11 +354,18 @@ function Register() {
                 دانش‌آموز
               </label>
               <input
-                type="text"
+                type="tel"
                 id="nationalCode"
                 name="nationalCode"
                 value={formData.nationalCode}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+                  setFormData((prev) => ({ ...prev, nationalCode: value }));
+                  setErrors((prev) => ({
+                    ...prev,
+                    nationalCode: value.length === 10 ? "" : "کد ملی باید ۱۰ رقم باشد.",
+                  }));
+                }}
                 required
                 maxLength={10}
                 pattern="[0-9]{10}"
@@ -329,7 +379,7 @@ function Register() {
             </div>
 
             {/* آدرس محل سکونت */}
-            <div className="flex flex-col">
+            <div className="flex flex-col md:col-span-2">
               <label
                 htmlFor="address"
                 className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
@@ -358,6 +408,7 @@ function Register() {
                 <FaFileImage className="text-blue-500 dark:text-blue-400" />{" "}
                 اطلاعات کارنامه تحصیلی (تصویر)
               </label>
+              <span className="text-xs text-gray-500 dark:text-gray-400 mb-2">فقط عکس با فرمت jpg, jpeg, png, gif, webp و حداکثر حجم ۵۰ مگابایت مجاز است.</span>
               <input
                 type="file"
                 id="transcript"
@@ -392,6 +443,7 @@ function Register() {
                 <FaBullseye className="text-blue-500 dark:text-blue-400" />{" "}
                 اولویت‌های هدایت تحصیلی (تصویر)
               </label>
+              <span className="text-xs text-gray-500 dark:text-gray-400 mb-2">فقط عکس با فرمت jpg, jpeg, png, gif, webp و حداکثر حجم ۵۰ مگابایت مجاز است.</span>
               <input
                 type="file"
                 id="guidancePriority"
@@ -423,7 +475,7 @@ function Register() {
             </div>
 
             {/* لوح تقدیر یا مقام علمی */}
-            <div className="flex flex-col">
+            <div className="flex flex-col md:col-span-2">
               <label
                 htmlFor="award"
                 className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
@@ -444,11 +496,13 @@ function Register() {
             </div>
 
             {/* دکمه ثبت فرم */}
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-800 text-white py-3 px-4 rounded-lg hover:from-blue-700 hover:to-indigo-700 dark:hover:from-blue-600 dark:hover:to-indigo-700 transition-all duration-300 shadow-md transform hover:-translate-y-1">
-              ثبت فرم
-            </button>
+            <div className="md:col-span-2">
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-800 text-white py-3 px-4 rounded-lg hover:from-blue-700 hover:to-indigo-700 dark:hover:from-blue-600 dark:hover:to-indigo-700 transition-all duration-300 shadow-md transform hover:-translate-y-1">
+                ثبت فرم
+              </button>
+            </div>
           </form>
         </div>
       </div>

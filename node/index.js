@@ -51,6 +51,14 @@ async function startServer() {
 
     app.use("/api/user", authRoute);
 
+    // Middleware هندل خطاهای multer و فایل غیرمجاز
+    app.use((err, req, res, next) => {
+      if (err && (err.message.includes('فقط فایل عکس') || err.name === 'MulterError')) {
+        return res.status(400).json({ error: err.message });
+      }
+      next(err);
+    });
+
     app.listen(3000, () => console.log("Server is running on port 3000"));
   } catch (err) {
     console.error("DB connection error:", err);
