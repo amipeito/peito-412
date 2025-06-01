@@ -261,15 +261,15 @@ export default function Panel() {
                       </p>
                       <p>
                         <strong>آدرس:</strong>
-                        <div
-                          style={{
-                            maxHeight: "100px",
-                            overflowY: "auto",
-                            whiteSpace: "pre-wrap",
-                          }}>
-                          {user.address}
-                        </div>
                       </p>
+                      <div
+                        style={{
+                          maxHeight: "100px",
+                          overflowY: "auto",
+                          whiteSpace: "pre-wrap",
+                        }}>
+                        {user.address}
+                      </div>
                       <p>
                         <strong>کارنامه:</strong>
                       </p>
@@ -308,15 +308,15 @@ export default function Panel() {
                       )}
                       <p>
                         <strong>لوح تقدیر:</strong>
-                        <div
-                          style={{
-                            maxHeight: "100px",
-                            overflowY: "auto",
-                            whiteSpace: "pre-wrap",
-                          }}>
-                          {user.award || "ندارد"}
-                        </div>
                       </p>
+                      <div
+                        style={{
+                          maxHeight: "100px",
+                          overflowY: "auto",
+                          whiteSpace: "pre-wrap",
+                        }}>
+                        {user.award || "ندارد"}
+                      </div>
                     </div>
                   </div>
                 ))}
