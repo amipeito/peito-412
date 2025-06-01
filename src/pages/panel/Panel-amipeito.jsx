@@ -143,6 +143,9 @@ export default function Panel() {
                         نام
                       </th>
                       <th className="border dark:border-gray-600 px-4 py-2">
+                        تلفن ثابت
+                      </th>
+                      <th className="border dark:border-gray-600 px-4 py-2">
                         شماره تماس
                       </th>
                       <th className="border dark:border-gray-600 px-4 py-2">
@@ -154,6 +157,7 @@ export default function Panel() {
                       <th className="border dark:border-gray-600 px-4 py-2">
                         آدرس
                       </th>
+                      <th className="border dark:border-gray-600 px-4 py-2">نام مدرسه قبلی</th>
                       <th className="border dark:border-gray-600 px-4 py-2">
                         کارنامه
                       </th>
@@ -174,6 +178,7 @@ export default function Panel() {
                           {index + 1}
                         </td>
                         <td className="dark:text-gray-200">{user.fullName}</td>
+                        <td className="border dark:border-gray-600 px-4 py-2">{user.landline || "-"}</td>
                         <td className="dark:text-gray-200">
                           {user.parentPhone}
                         </td>
@@ -191,6 +196,7 @@ export default function Panel() {
                             {user.address}
                           </div>
                         </td>
+                        <td className="border dark:border-gray-600 px-4 py-2">{user.previousSchool || "-"}</td>
                         <td className="border dark:border-gray-600 px-4 py-2">
                           {user.transcript ? (
                             <a
@@ -251,6 +257,9 @@ export default function Panel() {
                         <strong>نام:</strong> {user.fullName}
                       </p>
                       <p>
+                        <strong>تلفن ثابت:</strong> {user.landline || "-"}
+                      </p>
+                      <p>
                         <strong>شماره تماس:</strong> {user.parentPhone}
                       </p>
                       <p>
@@ -262,14 +271,17 @@ export default function Panel() {
                       <p>
                         <strong>آدرس:</strong>
                       </p>
-                      <div
-                        style={{
-                          maxHeight: "100px",
-                          overflowY: "auto",
-                          whiteSpace: "pre-wrap",
-                        }}>
-                        {user.address}
-                      </div>
+                        <div
+                          style={{
+                            maxHeight: "100px",
+                            overflowY: "auto",
+                            whiteSpace: "pre-wrap",
+                          }}>
+                          {user.address}
+                        </div>
+                      <p>
+                        <strong>نام مدرسه قبلی:</strong> {user.previousSchool || "-"}
+                      </p>
                       <p>
                         <strong>کارنامه:</strong>
                       </p>
@@ -309,14 +321,14 @@ export default function Panel() {
                       <p>
                         <strong>لوح تقدیر:</strong>
                       </p>
-                      <div
-                        style={{
-                          maxHeight: "100px",
-                          overflowY: "auto",
-                          whiteSpace: "pre-wrap",
-                        }}>
-                        {user.award || "ندارد"}
-                      </div>
+                        <div
+                          style={{
+                            maxHeight: "100px",
+                            overflowY: "auto",
+                            whiteSpace: "pre-wrap",
+                          }}>
+                          {user.award || "ندارد"}
+                        </div>
                     </div>
                   </div>
                 ))}

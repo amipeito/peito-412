@@ -4,6 +4,7 @@ const authRoute = require("./routes/auth");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const path = require("path");
+const visitRoute = require("./routes/visit");
 
 dotenv.config();
 
@@ -50,6 +51,7 @@ async function startServer() {
     console.log("Connected to DB!");
 
     app.use("/api/user", authRoute);
+    app.use("/api/visit", visitRoute);
 
     // Middleware هندل خطاهای multer و فایل غیرمجاز
     app.use((err, req, res, next) => {

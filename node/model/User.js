@@ -28,6 +28,16 @@ const userSchema = new mongoose.Schema({
     required: true,
     max: 2250,
   },
+  previousSchool: {
+    type: String,
+    required: true,
+    max: 255,
+  },
+  landline: {
+    type: String,
+    required: false,
+    max: 8,
+  },
   transcript: {
     type: String, // مسیر فایل کارنامه تحصیلی
     required: true,

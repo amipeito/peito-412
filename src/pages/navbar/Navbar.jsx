@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import DateTimeDisplay from '../../components/DateTimeDisplay';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,6 +10,10 @@ function Navbar() {
       className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors duration-300"
       dir="rtl">
       <div className="container mx-auto px-4 py-3 font-vazir">
+        {/* نمایش تاریخ و ساعت ایران */}
+        <div className="mb-2 flex justify-center">
+          <DateTimeDisplay />
+        </div>
         {/* Grid layout */}
         <div className="grid grid-cols-12 items-center gap-4">
           {/* لوگو / عنوان */}

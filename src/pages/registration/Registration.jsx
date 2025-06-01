@@ -9,6 +9,8 @@ import {
   FaFileImage,
   FaBullseye,
   FaTrophy,
+  FaSchool,
+  FaRegKeyboard,
 } from "react-icons/fa";
 
 function Register() {
@@ -18,6 +20,8 @@ function Register() {
     field: "",
     nationalCode: "",
     address: "",
+    previousSchool: "",
+    landline: "",
     transcript: null,
     guidancePriority: null,
     award: "",
@@ -75,6 +79,8 @@ function Register() {
         newValue = value.slice(0, 10); // حداکثر 10 رقم
       } else if (["address", "award"].includes(name)) {
         newValue = value.slice(0, 2250); // حداکثر 2250 کاراکتر (~15 خط)
+      } else if (name === "landline") {
+        newValue = value.replace(/[^0-9]/g, "").slice(0, 8); // فقط عدد و حداکثر 8 رقم
       }
       setFormData((prev) => ({ ...prev, [name]: newValue }));
 
@@ -192,6 +198,14 @@ function Register() {
       isValid = false;
     }
 
+    if (!formData.previousSchool) {
+      setErrors((prev) => ({
+        ...prev,
+        previousSchool: "نام مدرسه قبلی اجباری است",
+      }));
+      isValid = false;
+    }
+
     if (!isValid) return;
 
     // ارسال داده‌ها به سرور
@@ -219,6 +233,8 @@ function Register() {
             field: "",
             nationalCode: "",
             address: "",
+            previousSchool: "",
+            landline: "",
             transcript: null,
             guidancePriority: null,
             award: "",
@@ -400,6 +416,28 @@ function Register() {
               )}
             </div>
 
+            {/* نام مدرسه قبلی */}
+            <div className="flex flex-col md:col-span-2 mt-2">
+              <label
+                htmlFor="previousSchool"
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaSchool className="text-blue-500 dark:text-blue-400" /> نام مدرسه قبلی
+              </label>
+              <input
+                type="text"
+                id="previousSchool"
+                name="previousSchool"
+                value={formData.previousSchool}
+                onChange={handleChange}
+                required
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all bg-white dark:bg-gray-700 dark:text-gray-200"
+                placeholder="نام مدرسه قبلی"
+              />
+              {errors.previousSchool && (
+                <p className="text-red-500 text-sm mt-1">{errors.previousSchool}</p>
+              )}
+            </div>
+
             {/* کارنامه تحصیلی */}
             <div className="flex flex-col">
               <label
@@ -472,6 +510,26 @@ function Register() {
                   {errors.guidancePriority}
                 </p>
               )}
+            </div>
+
+            {/* تلفن ثابت */}
+            <div className="flex flex-col md:col-span-2">
+              <label
+                htmlFor="landline"
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaRegKeyboard className="text-blue-500 dark:text-blue-400" /> تلفن ثابت (اختیاری)
+              </label>
+              <input
+                type="tel"
+                id="landline"
+                name="landline"
+                value={formData.landline}
+                onChange={handleChange}
+                maxLength={8}
+                pattern="[0-9]{0,8}"
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all bg-white dark:bg-gray-700 dark:text-gray-200"
+                placeholder="مثلاً 12345678"
+              />
             </div>
 
             {/* لوح تقدیر یا مقام علمی */}

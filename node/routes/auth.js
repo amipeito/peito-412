@@ -101,6 +101,7 @@ router.post(
     body('field').notEmpty().withMessage('رشته آموزشی الزامی است'),
     body('nationalCode').isLength({ min: 10, max: 10 }).isNumeric().withMessage('کد ملی باید ۱۰ رقم باشد'),
     body('address').notEmpty().withMessage('آدرس الزامی است').isLength({ max: 2250 }).withMessage('آدرس حداکثر ۱۵ خط است'),
+    body('previousSchool').notEmpty().withMessage('نام مدرسه قبلی الزامی است').isLength({ max: 255 }).withMessage('نام مدرسه قبلی حداکثر ۲۵۵ کاراکتر است'),
     body('award').optional().isLength({ max: 2250 }).withMessage('لوح تقدیر حداکثر ۱۵ خط است'),
   ],
   async (req, res) => {
@@ -111,7 +112,7 @@ router.post(
     }
     try {
       // بررسی ثبت‌نام قبلی با کد ملی یا شماره تماس
-      const { nationalCode, parentPhone, fullName, field, address, award } = req.body;
+      const { nationalCode, parentPhone, fullName, field, address, award, previousSchool, landline } = req.body;
       const existingUser = await User.findOne({
         $or: [
           { nationalCode },
@@ -144,6 +145,8 @@ router.post(
         field,
         nationalCode,
         address,
+        previousSchool,
+        landline,
         transcript: transcriptPath,
         guidancePriority: guidancePriorityPath,
         award,

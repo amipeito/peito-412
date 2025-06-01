@@ -7,6 +7,7 @@ import Amir from "../../assets/images/amir.jpg";
 import Arseyeha from "../../assets/images/arseyeha.jpg";
 import ArefHaji from "../../assets/images/aref-haji.JPG";
 import Amirht from "../../assets/images/amirht.jpg";
+import SiteStats from './SiteStats';
 
 function Home() {
   return (
@@ -101,6 +102,7 @@ function Home() {
         </div>
 
         {/* Footer Section - هم رنگ با سایت */}
+        <SiteStats />
         <footer className="bg-gradient-to-r from-blue-50 to-sky-50 dark:from-gray-800 dark:to-gray-900 rounded-t-2xl shadow-inner pt-10 pb-6 px-4">
           <div className="container mx-auto text-center">
             <h3 className="text-xl font-bold mb-6 text-blue-900 dark:text-blue-300">

@@ -9,6 +9,7 @@ import {
   FaFileImage,
   FaBullseye,
   FaTrophy,
+  FaSchool,
 } from "react-icons/fa";
 
 function Register() {
@@ -18,6 +19,7 @@ function Register() {
     field: "",
     nationalCode: "",
     address: "",
+    previousSchool: "",
     transcript: null,
     guidancePriority: null,
     award: "",
@@ -192,6 +194,14 @@ function Register() {
       isValid = false;
     }
 
+    if (!formData.previousSchool) {
+      setErrors((prev) => ({
+        ...prev,
+        previousSchool: "نام مدرسه قبلی اجباری است",
+      }));
+      isValid = false;
+    }
+
     if (!isValid) return;
 
     // ارسال داده‌ها به سرور
@@ -219,6 +229,7 @@ function Register() {
             field: "",
             nationalCode: "",
             address: "",
+            previousSchool: "",
             transcript: null,
             guidancePriority: null,
             award: "",
@@ -374,6 +385,28 @@ function Register() {
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none bg-white dark:bg-gray-700 dark:text-gray-200"></textarea>
               {errors.address && (
                 <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+              )}
+            </div>
+
+            {/* نام مدرسه قبلی */}
+            <div className="flex flex-col">
+              <label
+                htmlFor="previousSchool"
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaSchool className="text-blue-500 dark:text-blue-400" /> نام مدرسه قبلی
+              </label>
+              <input
+                type="text"
+                id="previousSchool"
+                name="previousSchool"
+                value={formData.previousSchool}
+                onChange={handleChange}
+                required
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all bg-white dark:bg-gray-700 dark:text-gray-200"
+                placeholder="نام مدرسه قبلی"
+              />
+              {errors.previousSchool && (
+                <p className="text-red-500 text-sm mt-1">{errors.previousSchool}</p>
               )}
             </div>
 
