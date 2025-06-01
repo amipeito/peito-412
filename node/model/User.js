@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
   landline: {
     type: String,
     required: false,
-    max: 8,
+    max: 11,
   },
   transcript: {
     type: String, // مسیر فایل کارنامه تحصیلی

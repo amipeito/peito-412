@@ -23,6 +23,7 @@ function Register() {
     transcript: null,
     guidancePriority: null,
     award: "",
+    landline: "",
   });
   const [transcriptUploaded, setTranscriptUploaded] = useState(false);
   const [guidanceUploaded, setGuidanceUploaded] = useState(false);
@@ -77,6 +78,8 @@ function Register() {
         newValue = value.slice(0, 10); // حداکثر 10 رقم
       } else if (["address", "award"].includes(name)) {
         newValue = value.slice(0, 2250); // حداکثر 2250 کاراکتر (~15 خط)
+      } else if (name === "landline") {
+        newValue = value.replace(/[^0-9]/g, "").slice(0, 11); // فقط عدد و حداکثر 11 رقم
       }
       setFormData((prev) => ({ ...prev, [name]: newValue }));
 
@@ -233,6 +236,7 @@ function Register() {
             transcript: null,
             guidancePriority: null,
             award: "",
+            landline: "",
           });
           setTranscriptUploaded(false);
           setGuidanceUploaded(false);
@@ -503,6 +507,27 @@ function Register() {
               {errors.award && (
                 <p className="text-red-500 text-sm mt-1">{errors.award}</p>
               )}
+            </div>
+
+            {/* تلفن ثابت */}
+            <div className="flex flex-col">
+              <label
+                htmlFor="landline"
+                className="font-medium mb-1 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FaPhone className="text-blue-500 dark:text-blue-400" /> تلفن ثابت
+              </label>
+              <input
+                type="tel"
+                id="landline"
+                name="landline"
+                value={formData.landline}
+                onChange={handleChange}
+                maxLength={11}
+                pattern="[0-9]{0,11}"
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all bg-white dark:bg-gray-700 dark:text-gray-200"
+                placeholder="مثلاً 01112345678"
+              />
+              <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">تا ۱۱ رقم (اختیاری)</span>
             </div>
 
             {/* دکمه ثبت فرم */}
